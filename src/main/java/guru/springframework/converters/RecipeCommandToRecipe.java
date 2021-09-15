@@ -1,5 +1,6 @@
 package guru.springframework.converters;
 
+import guru.springframework.commands.CategoryCommand;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.domain.Recipe;
 import lombok.Synchronized;
@@ -45,8 +46,9 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
         recipe.setNotes(notesConverter.convert(source.getNotes()));
 
         if (source.getCategories() != null && source.getCategories().size() > 0){
-            source.getCategories()
-                    .forEach( category -> recipe.getCategories().add(categoryConveter.convert(category)));
+            for (CategoryCommand category : source.getCategories()) {
+                recipe.getCategories().add(categoryConveter.convert(category));
+            }
         }
 
         if (source.getIngredients() != null && source.getIngredients().size() > 0){
